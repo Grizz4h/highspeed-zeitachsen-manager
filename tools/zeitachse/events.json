@@ -205,5 +205,18 @@
       "content_type": "news",
       "offset": 0
     }
+  },
+  {
+    "id": "c784aa04d4ce4f588a634edec1ead8ed",
+    "date": "2125-10-13",
+    "title": "NEWS – S1 MD3 (off -1)",
+    "notes": "",
+    "kind": "content",
+    "meta": {
+      "season": 1,
+      "matchday": 3,
+      "content_type": "news",
+      "offset": -1
+    }
   }
 ]

@@ -2,6 +2,6 @@
   "season": 1,
   "matchday": 3,
   "content_type": "news",
-  "offset": -1,
+  "offset": 0,
   "allow_future": false
 }

@@ -5,7 +5,8 @@ from datetime import date
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-EVENTS_PATH = Path("events.json")
+BASE_DIR = Path(__file__).resolve().parent
+EVENTS_PATH = BASE_DIR / "events.json"
 
 @dataclass
 class CalendarEvent:

@@ -3,7 +3,8 @@ from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Optional
 
-STATE_PATH = Path("ui_state.json")
+BASE_DIR = Path(__file__).resolve().parent
+STATE_PATH = BASE_DIR / "ui_state.json"
 
 @dataclass
 class UIState:

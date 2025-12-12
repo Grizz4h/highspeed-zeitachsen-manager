@@ -10,7 +10,9 @@ from typing import Literal, Optional
 
 ContentType = Literal["episode", "sim", "promo", "news"]
 
-DEFAULT_CONFIG = Path("canon_time_config.json")
+BASE_DIR = Path(__file__).resolve().parent
+DEFAULT_CONFIG = BASE_DIR / "canon_time_config.json"
+
 
 
 @dataclass(frozen=True)
