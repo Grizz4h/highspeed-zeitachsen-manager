@@ -39,6 +39,8 @@ st.caption("Gib nur '2125-10-18' ein. Das Δ setzt der Renderer automatisch davo
 delta_date_input = st.text_input("Δ-Datum", value="2125-10-18", help="Format: 2125-10-18 (ohne Δ).")
 
 enable_vs = st.toggle("Renderer soll 'VS' in die Mitte schreiben (sonst frei lassen)", value=False)
+enable_team_fx = st.toggle("Teamnamen mit FX (Stroke/Shadow)", value=True)
+
 
 st.divider()
 
@@ -47,19 +49,23 @@ if json_path:
     if st.button("Render Spieltagsübersicht", type="primary"):
         try:
             out_path = render_from_json_file(
-                json_path=json_path,
-                enable_draw_vs=enable_vs,
-                delta_date=delta_date_input,   # <<< NEU
-            )
+            json_path=json_path,
+            enable_draw_vs=enable_vs,
+            delta_date=delta_date_input,
+            enable_fx_on_teams=enable_team_fx,
+            header_fx="ice_noise",
+        )
             st.success(f"Gerendert: {Path(out_path).name}")
 
-            st.image(str(out_path), caption=Path(out_path).name, use_container_width=True)
+            img_bytes = Path(out_path).read_bytes()
+            st.image(img_bytes, caption=Path(out_path).name, use_container_width=True)
             st.download_button(
                 "PNG herunterladen",
-                data=Path(out_path).read_bytes(),
+                data=img_bytes,
                 file_name=Path(out_path).name,
                 mime="image/png",
             )
+
         except Exception as e:
             st.error(f"Render fehlgeschlagen: {e}")
 else:

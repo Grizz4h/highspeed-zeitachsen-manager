@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "ts": "2025-12-13T18:19:03Z",
+    "platform": "tiktok",
+    "pillar": "sport",
+    "format": "gameday_signal",
+    "hook": "",
+    "text": "",
+    "asset": "",
+    "hashtags": [
+      "#highspeed",
+      "#novadelta",
+      "#deltanet",
+      "#gameday",
+      "#hockey"
+    ]
+  }
+]

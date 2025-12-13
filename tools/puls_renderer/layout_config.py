@@ -52,5 +52,5 @@ class MatchdayLayoutV1:
     footer_date_y: int = 1285
 
     # Colors (RGBA)
-    color_text: Tuple[int, int, int, int] = (230, 240, 248, 255)   # off-white
+    color_text: Tuple[int, int, int, int] = (174, 220, 255, 255)  # #AEDCFF
     color_accent: Tuple[int, int, int, int] = (120, 190, 220, 255) # eisblau
