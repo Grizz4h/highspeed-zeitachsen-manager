@@ -1,5 +1,7 @@
 import json
 import random
+import re
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Any, Optional, Tuple, List
@@ -47,6 +49,10 @@ def _load_font(font_path: Path, size: int) -> ImageFont.FreeTypeFont:
         raise FileNotFoundError(f"Font not found: {font_path}")
     return ImageFont.truetype(str(font_path), size)
 
+def _text_width_singleline(draw, s: str, font) -> int:
+    # textlength crasht bei multiline -> hier nur singleline messen
+    return int(draw.textlength(s, font=font))
+
 
 def _fit_text(
     draw: ImageDraw.ImageDraw,
@@ -59,11 +65,267 @@ def _fit_text(
     size = start_size
     while size >= min_size:
         font = _load_font(font_path, size)
-        w = draw.textlength(text, font=font)
+                # multiline-safe: max width der einzelnen Zeilen messen
+        lines = str(text).split("\n")
+        w = max((_text_width_singleline(draw, line, font) for line in lines), default=0)
+
         if w <= max_width:
             return font
         size -= 2
     return _load_font(font_path, min_size)
+
+import re
+def _text_w(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont) -> int:
+    # PIL-sicher (auch bei Sonderzeichen). Kein multiline hier!
+    bbox = draw.textbbox((0, 0), text, font=font)
+    return int(bbox[2] - bbox[0])
+
+
+def _split_first_last(fake_name: str) -> tuple[str, str]:
+    fake_name = (fake_name or "").strip()
+    if not fake_name:
+        return "", ""
+    parts = fake_name.split()
+    if len(parts) == 1:
+        return parts[0], ""
+    return " ".join(parts[:-1]), parts[-1]
+
+
+def _truncate_line(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont, max_w: int) -> str:
+    if _text_w(draw, text, font) <= max_w:
+        return text
+    ell = "…"
+    lo, hi = 0, len(text)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        cand = text[:mid].rstrip() + ell
+        if _text_w(draw, cand, font) <= max_w:
+            lo = mid + 1
+        else:
+            hi = mid
+    return text[: max(0, lo - 1)].rstrip() + ell
+
+
+def _split_first_last(full: str) -> tuple[str, str]:
+    """
+    Split in Vorname / Nachname.
+    Bei mehr als 2 Wörtern: alles bis auf letztes Wort = Vorname, letztes Wort = Nachname.
+    """
+    s = (full or "").replace("_", " ").strip()
+    if not s:
+        return "", ""
+    parts = s.split()
+    if len(parts) == 1:
+        return parts[0], ""
+    return " ".join(parts[:-1]), parts[-1]
+
+
+def _draw_player_block_centered(
+    img: Image.Image,
+    draw: ImageDraw.ImageDraw,
+    center: tuple[int, int],
+    number: str,
+    fake_name: str,
+    font: ImageFont.FreeTypeFont,
+    fill: tuple[int, int, int, int],
+    max_width: int = 360,
+    gap_px: int = 10,         # Abstand zwischen Nummer und Name (horizontal)
+    line_gap_px: int = 42,    # Abstand zwischen Vor- und Nachname (vertikal)
+    stroke: bool = True,
+    stroke_width: int = 3,
+    stroke_fill: tuple[int, int, int, int] = (0, 0, 0, 170),
+) -> None:
+    """
+    Layout (linksbündig, aber Block zentriert):
+      #31  VORNAME
+           NACHNAME
+    Nachname startet exakt unter dem Vornamen (Indent = Breite von "#31 ").
+    """
+    cx, cy = center
+
+    num = (number or "").strip()
+    first, last = _split_first_last(fake_name)
+
+    first = (first or "").upper().strip()
+    last  = (last or "").upper().strip()
+
+    prefix = f"#{num} " if num else ""
+    prefix = prefix.upper()
+
+    # --- Truncate (WICHTIG: nur EINZEILIG messen, kein \n) ---
+    # Erwartet: _truncate_line(draw, text, font, max_width) existiert.
+    # Erwartet: _text_w(draw, text, font) existiert.
+    if prefix:
+        # prefix zählt NICHT in max_width für den Namen, sonst wird alles zu kurz
+        name_max = max(10, max_width - _text_w(draw, prefix, font))
+    else:
+        name_max = max_width
+
+    first = _truncate_line(draw, first, font, name_max) if first else ""
+    last  = _truncate_line(draw, last,  font, name_max) if last else ""
+
+    if not first and not last:
+        return
+
+    # Breiten berechnen
+    w_prefix = _text_w(draw, prefix, font) if prefix else 0
+    w_first  = _text_w(draw, first, font) if first else 0
+    w_last   = _text_w(draw, last, font) if last else 0
+
+    # Blockbreite = max( prefix+first , prefix+last )
+    block_w = max(w_prefix + w_first, w_prefix + w_last)
+    x0 = int(cx - block_w / 2)
+    y0 = int(cy)
+
+    def _fx(x: int, y: int, t: str):
+        if not t:
+            return
+        draw_text_fx(
+            img,
+            (x, y),
+            t,
+            font,
+            fill=fill,
+            anchor="la",
+            glow=False,
+            shadow=True,
+            shadow_offset=(0, 2),
+            shadow_alpha=140,
+            stroke=stroke,
+            stroke_width=stroke_width,
+            stroke_fill=stroke_fill,
+        )
+
+    # Zeile 1: Prefix + Vorname (Prefix separat, damit Indent sauber ist)
+    if prefix:
+        _fx(x0, y0, prefix)
+    if first:
+        _fx(x0 + w_prefix + (gap_px if prefix else 0), y0, first)
+
+    # Zeile 2: Nachname eingerückt um Prefix (+ gap)
+    if last:
+        _fx(x0 + w_prefix + (gap_px if prefix else 0), y0 + line_gap_px, last)
+
+
+def _slugify_team_name(name: str) -> str:
+    s = (name or "").strip().lower()
+    # german chars
+    s = (
+        s.replace("ä", "ae")
+         .replace("ö", "oe")
+         .replace("ü", "ue")
+         .replace("ß", "ss")
+    )
+    # whitespace / underscores -> dash
+    s = re.sub(r"[\s_]+", "-", s)
+    # remove everything not alnum or dash
+    s = re.sub(r"[^a-z0-9\-]+", "", s)
+    # clean repeated dashes
+    s = re.sub(r"-{2,}", "-", s).strip("-")
+    return s
+
+
+def _load_team_display_map(fonts_dir: Path) -> Dict[str, str]:
+    """
+    Optional file:
+    tools/puls_renderer/assets/team_display_names.json  (or fonts_dir.parent/.. depending on your structure)
+    In your matchday renderer you used: fonts_dir.parent / "team_display_names.json"
+    We'll keep same rule.
+    """
+    p = fonts_dir.parent / "team_display_names.json"
+    if p.exists():
+        return json.loads(p.read_text(encoding="utf-8"))
+    return {}
+
+
+def _team_name_to_logo_slug(team_name: str, display_map: Dict[str, str]) -> str:
+    """
+    display_map is slug -> display.
+    We need reverse: display -> slug.
+    """
+    reverse = {v.strip().lower(): k for k, v in display_map.items()}
+    key = (team_name or "").strip().lower()
+    if key in reverse:
+        return reverse[key]
+    return _slugify_team_name(team_name)
+
+def format_player(player) -> str:
+    """
+    Output:
+      "#40 HENRIKE\nHAUKELIK"
+    (Nummer + Fake-ID, 2 Zeilen)
+    """
+    def _split_two_lines(name: str) -> tuple[str, str]:
+        name = (name or "").replace("_", " ").strip()
+        if not name:
+            return ("", "")
+        parts = [p for p in name.split(" ") if p]
+        if len(parts) == 1:
+            return (parts[0].upper(), "")
+        first = " ".join(parts[:-1]).upper()
+        last = parts[-1].upper()
+        return (first, last)
+
+    # dict
+    if isinstance(player, dict):
+        num = player.get("number") or player.get("NUMBER") or ""
+        pid = player.get("id") or player.get("ID") or ""
+        if not pid:
+            pid = player.get("name") or player.get("NAME") or ""
+
+        if isinstance(num, int):
+            num = str(num)
+        num = str(num).strip()
+
+        first, last = _split_two_lines(str(pid))
+        top = f"#{num} {first}".strip() if num else first
+        if last:
+            return f"{top}\n{last}"
+        return top
+
+    # string
+    if isinstance(player, str):
+        first, last = _split_two_lines(player)
+        return f"{first}\n{last}".strip() if last else first
+
+    return ""
+
+
+
+def player_label(player: dict | str | None) -> str:
+    """
+    Gibt genau das zurück, was ins Bild darf:
+    '#31 Geraldo Kuhnnik'
+    - nutzt NUMBER + ID (Fake-Name)
+    - ID wird aus _ -> " " umgewandelt
+    - keine Position, kein echtes NAME
+    """
+    if not player:
+        return ""
+
+    # Falls irgendwo doch mal ein String kommt
+    if isinstance(player, str):
+        raw = player
+        number = ""
+    elif isinstance(player, dict):
+        number = player.get("NUMBER") or player.get("number") or ""
+        raw = player.get("ID") or player.get("id") or ""
+    else:
+        return str(player)
+
+    # ID schön machen
+    name = str(raw).replace("_", " ").strip()
+    # Title Case (macht aus 'GERALDO KUHNNIK' -> 'Geraldo Kuhnnik')
+    name = " ".join(w.capitalize() for w in name.split())
+
+    if number and name:
+        return f"#{number} {name}"
+    if name:
+        return name
+    if number:
+        return f"#{number}"
+    return ""
+
 
 
 # ----------------------------
@@ -294,20 +556,7 @@ def render_matchday_overview(
         anchor="mm",
     )
 
-    # truncate helper
-    def _truncate_to_width(drw: ImageDraw.ImageDraw, text_: str, font_: ImageFont.FreeTypeFont, max_width_: int) -> str:
-        if drw.textlength(text_, font=font_) <= max_width_:
-            return text_
-        ell = "…"
-        lo, hi = 0, len(text_)
-        while lo < hi:
-            mid = (lo + hi) // 2
-            cand = text_[:mid].rstrip() + ell
-            if drw.textlength(cand, font=font_) <= max_width_:
-                lo = mid + 1
-            else:
-                hi = mid
-        return text_[: max(0, lo - 1)].rstrip() + ell
+
 
     # Matches
     nord: List[Dict[str, str]] = data.get("nord", [])
@@ -449,3 +698,458 @@ def render_from_json_file(
         enable_fx_on_teams=enable_fx_on_teams,
         header_fx=header_fx,
     )
+from .layout_config import Starting6LayoutV1
+from .lineup_adapter import extract_starting6_for_matchup
+
+def render_starting6_from_files(
+    matchday_json_path: Path,
+    lineups_json_path: Path,
+    home_team: str,
+    away_team: str,
+    template_name: str = "starting6v1.png",
+    out_name: Optional[str] = None,
+    layout: Optional[Starting6LayoutV1] = None,
+) -> Path:
+    """
+    Renders a Starting6 graphic for one selected matchup.
+    Uses:
+      - matchday json only for metadata (optional)
+      - lineups json for players (required)
+    """
+    base_dir = Path(__file__).resolve().parent
+    paths = RenderPaths(base_dir=base_dir)
+    layout = layout or Starting6LayoutV1()
+
+    matchday = _safe_load_json(matchday_json_path)
+    lineups = _safe_load_json(lineups_json_path)
+
+    # template
+    template_path = paths.templates_dir / template_name
+    if not template_path.exists():
+        raise FileNotFoundError(f"Template not found: {template_path}")
+
+    img = Image.open(template_path).convert("RGBA")
+    draw = ImageDraw.Draw(img)
+
+    # fonts
+    font_bold_path = paths.fonts_dir / "Inter-Bold.ttf"
+    font_med_path = paths.fonts_dir / "Inter-Medium.ttf"
+
+    font_header = _load_font(font_bold_path, 56)
+    font_team = _load_font(font_bold_path, 28)
+    font_label = _load_font(font_med_path, 18)
+    font_player = _load_font(font_med_path, 22)
+
+    # display map (slug -> display)
+    display_map = _load_team_display_map(paths.fonts_dir)
+
+    # header text
+    spieltag = matchday.get("spieltag")
+    header_text = "TOP GAME"
+    if spieltag is not None:
+        header_text = f"TOP GAME – SPIELTAG {spieltag}"
+
+    # draw header
+    draw.text(
+        (layout.header_center_x, layout.header_y),
+        header_text,
+        font=font_header,
+        fill=layout.color_text,
+        anchor="mm",
+    )
+
+    # extract players
+    s6 = extract_starting6_for_matchup(lineups, home_team, away_team)
+
+    def _draw_team_block(center_x: int, team_name: str, block: Dict[str, Any]):
+        slug = _team_name_to_logo_slug(team_name, display_map)
+
+        # logo
+        logo = _load_logo(paths.logos_dir, slug, layout.logo_size, layout.color_accent)
+        img.alpha_composite(
+            logo,
+            (int(center_x - layout.logo_size / 2), int(layout.teams_y - layout.logo_size / 2)),
+        )
+
+        # team name
+        team_txt = team_name.upper()
+        draw.text(
+            (center_x, layout.team_name_y),
+            team_txt,
+            font=font_team,
+            fill=layout.color_text,
+            anchor="mm",
+        )
+
+        # labels + players
+        y = layout.section_y_start
+
+        def line(label: str, value: str):
+            nonlocal y
+            draw.text((center_x, y), label, font=font_label, fill=layout.color_dim, anchor="mm")
+            y += 26
+            draw.text((center_x, y), value, font=font_player, fill=layout.color_text, anchor="mm")
+            y += layout.line_gap
+
+        fw = block.get("forwards", [])
+        df = block.get("defense", [])
+        g = block.get("goalie", "")
+
+        fw_txt = " • ".join(fw) if fw else "—"
+        df_txt = " • ".join(df) if df else "—"
+        g_txt = g if g else "—"
+
+        line("FORWARDS (LINE 1)", fw_txt)
+        line("DEFENSE (PAIR 1)", df_txt)
+        line("GOALIE", g_txt)
+
+    _draw_team_block(layout.home_center_x, s6["home"]["team"], s6["home"])
+    _draw_team_block(layout.away_center_x, s6["away"]["team"], s6["away"])
+
+    # output name
+    if out_name is None:
+        safe_home = _slugify_team_name(home_team)
+        safe_away = _slugify_team_name(away_team)
+        out_name = f"starting6_{safe_home}_vs_{safe_away}.png"
+
+    out_path = paths.output_dir / out_name
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    img.save(out_path)
+    return out_path
+
+
+# ============================
+# STARTING6 RENDERER (Option B)
+# ============================
+from .layout_config import Starting6LayoutV1
+from .adapter import slugify_team
+from .lineup_adapter import extract_starting6_for_matchup
+
+
+def _truncate_to_width(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont, max_width: int) -> str:
+    text = "" if text is None else str(text)
+
+    # multiline-safe: jede Zeile einzeln messen
+    if "\n" in text:
+        return "\n".join(
+            _truncate_to_width(draw, line, font, max_width)
+            for line in text.split("\n")
+        )
+
+    if draw.textlength(text, font=font) <= max_width:
+        return text
+
+    ell = "…"
+    lo, hi = 0, len(text)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        cand = text[:mid].rstrip() + ell
+        if draw.textlength(cand, font=font) <= max_width:
+            lo = mid + 1
+        else:
+            hi = mid
+
+    return text[: max(0, lo - 1)].rstrip() + ell
+
+
+
+def _draw_divider(img: Image.Image, y: int, color: Tuple[int, int, int, int]) -> None:
+    d = ImageDraw.Draw(img)
+    d.line((110, y, 970, y), fill=color, width=2)
+    # kleine “Ticks” für Style
+    d.line((110, y - 10, 110, y + 10), fill=color, width=2)
+    d.line((970, y - 10, 970, y + 10), fill=color, width=2)
+
+
+def _draw_arc_three(
+    img: Image.Image,
+    draw: ImageDraw.ImageDraw,
+    names: List[str],
+    center_y: int,
+    direction: str,  # "down" | "up"
+    font_path: Path,
+    start_size: int,
+    color: Tuple[int, int, int, int],
+) -> None:
+    """
+    Zeichnet 3 Namen in einer leichten Krümmung.
+    direction="down": Mitte tiefer (Home)
+    direction="up":   Mitte höher (Away)
+    """
+    # Positionen (fix für 1080x1350)
+    xs = [260, 540, 820]
+    amp = 22  # Krümmungs-Amplitude
+
+    ys = [center_y, center_y, center_y]
+    if direction == "down":
+        ys = [center_y - 6, center_y + amp, center_y - 6]
+    else:
+        ys = [center_y + 6, center_y - amp, center_y + 6]
+
+    for i in range(3):
+        name = (names[i] if i < len(names) else "").strip()
+        if not name:
+            continue
+
+        # Font fit pro Name (damit lange Namen nicht explodieren)
+        font = ImageFont.truetype(str(font_path), size=start_size)
+        raw = name  # name ist schon format_player(...) output mit \n
+        lines = raw.split("\n")
+        line1 = _truncate_to_width(draw, lines[0], font, 320) if len(lines) > 0 else ""
+        line2 = _truncate_to_width(draw, lines[1], font, 320) if len(lines) > 1 else ""
+        safe = (line1 + ("\n" + line2 if line2 else "")).strip()
+
+
+        draw_text_fx(
+            img,
+            (xs[i], ys[i]),
+            safe,
+            font,
+            fill=color,
+            anchor="mm",
+            glow=False,
+            shadow=True,
+            shadow_offset=(0, 2),
+            shadow_alpha=140,
+            stroke=True,
+            stroke_width=2,
+            stroke_fill=(0, 0, 0, 190),
+        )
+
+
+def _draw_two(
+    img: Image.Image,
+    draw: ImageDraw.ImageDraw,
+    left: str,
+    right: str,
+    y: int,
+    font_path: Path,
+    start_size: int,
+    color: Tuple[int, int, int, int],
+) -> None:
+    x1, x2 = 380, 700
+    max_w = 360
+
+    for x, t in [(x1, left), (x2, right)]:
+        t = (t or "").strip()
+        if not t:
+            continue
+        font = _fit_text(draw, t.upper(), font_path, max_width=max_w, start_size=start_size, min_size=20)
+        safe = _truncate_to_width(draw, t.upper(), font, max_w)
+        draw_text_fx(
+            img,
+            (x, y),
+            safe,
+            font,
+            fill=color,
+            anchor="mm",
+            glow=False,
+            shadow=True,
+            shadow_offset=(0, 2),
+            shadow_alpha=140,
+            stroke=True,
+            stroke_width=2,
+            stroke_fill=(0, 0, 0, 190),
+        )
+
+
+def _draw_one_center(
+    img: Image.Image,
+    draw: ImageDraw.ImageDraw,
+    text: str,
+    y: int,
+    font_path: Path,
+    start_size: int,
+    color: Tuple[int, int, int, int],
+) -> None:
+    text = (text or "").strip()
+    if not text:
+        return
+    font = ImageFont.truetype(str(font_path), size=start_size)
+    safe = _truncate_to_width(draw, text.upper(), font, 700)
+    draw_text_fx(
+        img,
+        (540, y),
+        safe,
+        font,
+        fill=color,
+        anchor="mm",
+        glow=False,
+        shadow=True,
+        shadow_offset=(0, 2),
+        shadow_alpha=140,
+        stroke=True,
+        stroke_width=2,
+        stroke_fill=(0, 0, 0, 190),
+    )
+
+
+def render_starting6_from_files(
+    matchday_json_path: Path,
+    lineups_json_path: Path,
+    home_team: str,
+    away_team: str,
+    template_name: str = "starting6v1.png",
+    out_name: Optional[str] = None,
+    season_label: str = "SAISON 1",
+) -> Path:
+    """
+    Option B Layout (oben Home, unten Away).
+    """
+    base_dir = Path(__file__).resolve().parent
+    paths = RenderPaths(base_dir=base_dir)
+    layout = Starting6LayoutV1()
+
+    matchday = _safe_load_json(Path(matchday_json_path))
+    lineups = _safe_load_json(Path(lineups_json_path))
+
+    starting6 = extract_starting6_for_matchup(lineups, home_team, away_team)
+
+    # Spieltag versuchen zu ziehen
+    spieltag = matchday.get("spieltag")
+    if spieltag is None and "results" in matchday:
+        spieltag = matchday.get("spieltag", "X")
+
+    template_path = paths.templates_dir / template_name
+    if not template_path.exists():
+        raise FileNotFoundError(f"Template not found: {template_path}")
+
+    if out_name is None:
+        out_name = f"starting6_{home_team.replace(' ', '-')}_vs_{away_team.replace(' ', '-')}.png"
+
+    out_path = paths.output_dir / out_name
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    img = Image.open(template_path).convert("RGBA")
+    draw = ImageDraw.Draw(img)
+
+    font_bold = paths.fonts_dir / "Inter-Bold.ttf"
+    font_med = paths.fonts_dir / "Inter-Medium.ttf"
+
+    # Header: "TOP GAME / STARTING SIX"
+    header = "TOP GAME"
+    sub = f"{season_label} • SPIELTAG {spieltag}"
+    font_h = _fit_text(draw, header, font_bold, max_width=900, start_size=layout.title_size, min_size=40)
+    draw_text_ice_noise_bbox(
+        img, (540, layout.header_title_y), header, font_h,
+        fill=layout.color_text, anchor="mm",
+        intensity=0.12, speck_size=1, seed=2, threshold=90
+    )
+
+    font_sub = _fit_text(draw, sub.upper(), font_med, max_width=900, start_size=layout.sub_size, min_size=14)
+    draw.text((540, layout.header_sub_y), sub.upper(), font=font_sub, fill=layout.color_accent, anchor="mm")
+
+    # Divider
+    _draw_divider(img, layout.divider_y, layout.color_divider)
+
+    # Logos
+    home_id = slugify_team(home_team)
+    away_id = slugify_team(away_team)
+
+    logo_home = _load_logo(paths.logos_dir, home_id, layout.logo_size, layout.color_accent)
+    logo_away = _load_logo(paths.logos_dir, away_id, layout.logo_size, layout.color_accent)
+
+    img.alpha_composite(logo_home, (540 - layout.logo_size // 2, layout.home_logo_y - layout.logo_size // 2))
+    img.alpha_composite(logo_away, (540 - layout.logo_size // 2, layout.away_logo_y - layout.logo_size // 2))
+
+    # HOME block
+    home = starting6["home"]
+    font_obj = ImageFont.truetype(str(font_bold), size=layout.name_size)
+
+    # Goalie (Home)
+    g = home["goalie"]
+    _draw_player_block_centered(
+        img, draw,
+        center=(540, layout.home_goalie_y),
+        number=str(g.get("number") or g.get("NUMBER") or ""),
+        fake_name=str(g.get("id") or g.get("ID") or ""),
+        font=font_obj,
+        fill=layout.color_text,
+        max_width=700,
+    )
+
+    # Defense (Home)
+    d = home["defense"]
+    pL = d[0] if len(d) > 0 else {}
+    pR = d[1] if len(d) > 1 else {}
+
+    _draw_player_block_centered(
+        img, draw,
+        center=(380, layout.home_def_y),
+        number=str(pL.get("number") or pL.get("NUMBER") or ""),
+        fake_name=str(pL.get("id") or pL.get("ID") or ""),
+        font=font_obj,
+        fill=layout.color_text,
+    )
+
+    _draw_player_block_centered(
+        img, draw,
+        center=(700, layout.home_def_y),
+        number=str(pR.get("number") or pR.get("NUMBER") or ""),
+        fake_name=str(pR.get("id") or pR.get("ID") or ""),
+        font=font_obj,
+        fill=layout.color_text,
+    )
+
+    # Forwards (Home) – leichte Wölbung nach unten
+    f = home["forwards"]
+    pLW = f[0] if len(f) > 0 else {}
+    pC  = f[1] if len(f) > 1 else {}
+    pRW = f[2] if len(f) > 2 else {}
+
+    _draw_player_block_centered(img, draw, (260, layout.home_fwd_y - 6),
+        str(pLW.get("number") or pLW.get("NUMBER") or ""), str(pLW.get("id") or pLW.get("ID") or ""), font_obj, layout.color_text)
+
+    _draw_player_block_centered(img, draw, (540, layout.home_fwd_y + 22),
+        str(pC.get("number") or pC.get("NUMBER") or ""), str(pC.get("id") or pC.get("ID") or ""), font_obj, layout.color_text)
+
+    _draw_player_block_centered(img, draw, (820, layout.home_fwd_y - 6),
+        str(pRW.get("number") or pRW.get("NUMBER") or ""), str(pRW.get("id") or pRW.get("ID") or ""), font_obj, layout.color_text)
+
+        # Divider bleibt wie gehabt
+    _draw_divider(img, layout.divider_y, layout.color_divider)
+
+    # AWAY block
+    away = starting6["away"]
+    font_obj = ImageFont.truetype(str(font_bold), size=layout.name_size)
+
+    # Forwards (Away) – gegenläufig: Wölbung nach oben
+    f2 = away["forwards"]
+    pLW = f2[0] if len(f2) > 0 else {}
+    pC  = f2[1] if len(f2) > 1 else {}
+    pRW = f2[2] if len(f2) > 2 else {}
+
+    _draw_player_block_centered(img, draw, (260, layout.away_fwd_y + 6),
+        str(pLW.get("number") or pLW.get("NUMBER") or ""), str(pLW.get("id") or pLW.get("ID") or ""), font_obj, layout.color_text)
+
+    _draw_player_block_centered(img, draw, (540, layout.away_fwd_y - 22),
+        str(pC.get("number") or pC.get("NUMBER") or ""), str(pC.get("id") or pC.get("ID") or ""), font_obj, layout.color_text)
+
+    _draw_player_block_centered(img, draw, (820, layout.away_fwd_y + 6),
+        str(pRW.get("number") or pRW.get("NUMBER") or ""), str(pRW.get("id") or pRW.get("ID") or ""), font_obj, layout.color_text)
+
+    # Defense (Away)
+    d2 = away["defense"]
+    pL = d2[0] if len(d2) > 0 else {}
+    pR = d2[1] if len(d2) > 1 else {}
+
+    _draw_player_block_centered(img, draw, (380, layout.away_def_y),
+        str(pL.get("number") or pL.get("NUMBER") or ""), str(pL.get("id") or pL.get("ID") or ""), font_obj, layout.color_text)
+
+    _draw_player_block_centered(img, draw, (700, layout.away_def_y),
+        str(pR.get("number") or pR.get("NUMBER") or ""), str(pR.get("id") or pR.get("ID") or ""), font_obj, layout.color_text)
+
+    # Goalie (Away)
+    g = away["goalie"]
+    _draw_player_block_centered(
+        img, draw,
+        center=(540, layout.away_goalie_y),
+        number=str(g.get("number") or g.get("NUMBER") or ""),
+        fake_name=str(g.get("id") or g.get("ID") or ""),
+        font=font_obj,
+        fill=layout.color_text,
+        max_width=700,
+    )
+
+    img.save(out_path)
+    return out_path
