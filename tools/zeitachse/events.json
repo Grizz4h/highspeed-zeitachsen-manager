@@ -115,48 +115,6 @@
     }
   },
   {
-    "id": "2ea5e5e49918464e9fffa01ca76ccdc6",
-    "date": "2125-10-17",
-    "title": "NEWS – S1 MD4 (off 0)",
-    "notes": "",
-    "kind": "content",
-    "meta": {
-      "season": 1,
-      "matchday": 4,
-      "content_type": "news",
-      "offset": 0
-    }
-  },
-  {
-    "id": "dd896e85232f4ea8b8335c1d819a422c",
-    "date": "2125-10-17",
-    "title": "NEWS – S1 MD4 (off 0)",
-    "notes": "",
-    "kind": "content",
-    "meta": {
-      "season": 1,
-      "matchday": 4,
-      "content_type": "news",
-      "offset": 0
-    }
-  },
-  {
-    "id": "3767475813794b15b2d67c6dc0be9cbd",
-    "date": "2125-10-18",
-    "title": "asdads",
-    "notes": "addaasd",
-    "kind": "free",
-    "meta": null
-  },
-  {
-    "id": "39316643fcc34be7989c0a2542e794b4",
-    "date": "2125-10-18",
-    "title": "asdads",
-    "notes": "asdasdasasdasddas",
-    "kind": "free",
-    "meta": null
-  },
-  {
     "id": "37f3a82403a745f9b8d40931bc0b20aa",
     "date": "2125-10-20",
     "title": "asdads",

@@ -130,6 +130,28 @@ def _split_first_last(full: str) -> tuple[str, str]:
         return parts[0], ""
     return " ".join(parts[:-1]), parts[-1]
 
+def _draw_watermark(
+    img: Image.Image,
+    draw: ImageDraw.ImageDraw,
+    text: str,
+    font: ImageFont.FreeTypeFont,
+    margin: int = 24,
+    opacity: int = 110,
+):
+    w, h = img.size
+    tw = draw.textlength(text, font=font)
+    th = font.size
+
+    x = w - tw - margin
+    y = h - th - margin
+
+    draw.text(
+        (x, y),
+        text,
+        font=font,
+        fill=(255, 255, 255, opacity),
+    )
+
 def _draw_name_bg(draw, x, y, w, h):
     draw.rounded_rectangle(
         (x-10, y-4, x+w+10, y+h+4),
@@ -573,6 +595,16 @@ def render_matchday_overview(
         anchor="mm",
     )
 
+    wm_font = ImageFont.truetype(str(fonts_dir / "Inter-Medium.ttf"), size=20)
+    _draw_watermark(
+        img,
+        draw,
+        text="powered by HIGHspeeΔ PUX! Engine",
+        font=wm_font,
+        margin=22,
+        opacity=90,
+    )
+
 
 
     # Matches
@@ -666,6 +698,7 @@ def render_matchday_overview(
 
     for i, m in enumerate(sued):
         draw_match_row(layout.y_sued[i], m["home"], m["away"])
+
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     img.save(out_path)
@@ -1062,6 +1095,16 @@ def render_starting6_from_files(
         font=font_obj,
         fill=layout.color_text,
         max_width=700,
+    )
+    wm_font = ImageFont.truetype(str(paths.fonts_dir / "Inter-Medium.ttf"), size=20)
+
+    _draw_watermark(
+        img,
+        draw,
+        text="powered by HIGHspeeΔ PUX! Engine",
+        font=wm_font,
+        margin=22,
+        opacity=90,
     )
 
     img.save(out_path)
