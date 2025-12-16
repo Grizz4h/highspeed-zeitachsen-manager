@@ -14,92 +14,12 @@
     }
   },
   {
-    "id": "bfa0545459d24f2290a500e4e5cd5658",
-    "date": "2125-10-11",
-    "title": "NEWS – S1 MD2 (off 0)",
-    "notes": "",
-    "kind": "content",
-    "meta": {
-      "season": 1,
-      "matchday": 2,
-      "content_type": "news",
-      "offset": 0,
-      "planned": false
-    }
-  },
-  {
-    "id": "70da5a39c73a4a54a889da51d25406c4",
-    "date": "2125-10-11",
-    "title": "NEWS – S1 MD2 (off 0)",
-    "notes": "",
-    "kind": "content",
-    "meta": {
-      "season": 1,
-      "matchday": 2,
-      "content_type": "news",
-      "offset": 0,
-      "planned": false
-    }
-  },
-  {
     "id": "8381bf5e85174a8b9e92f02a2665b20a",
     "date": "2125-10-04",
     "title": "NEWSFLASH",
     "notes": "shizzle",
     "kind": "free",
     "meta": null
-  },
-  {
-    "id": "1867105df9794b8ea81d96d00926f32e",
-    "date": "2125-10-11",
-    "title": "NEWS – S1 MD2 (off 0)",
-    "notes": "",
-    "kind": "content",
-    "meta": {
-      "season": 1,
-      "matchday": 2,
-      "content_type": "news",
-      "offset": 0
-    }
-  },
-  {
-    "id": "7333df00df034663acb1796d55b8992f",
-    "date": "2125-10-11",
-    "title": "NEWS – S1 MD2 (off 0)",
-    "notes": "",
-    "kind": "content",
-    "meta": {
-      "season": 1,
-      "matchday": 2,
-      "content_type": "news",
-      "offset": 0
-    }
-  },
-  {
-    "id": "8d2b7baf2b88496fb3067f984009df7a",
-    "date": "2125-10-11",
-    "title": "NEWS – S1 MD2 (off 0)",
-    "notes": "",
-    "kind": "content",
-    "meta": {
-      "season": 1,
-      "matchday": 2,
-      "content_type": "news",
-      "offset": 0
-    }
-  },
-  {
-    "id": "e84d6b72f16947d2827b34700c04d077",
-    "date": "2125-10-11",
-    "title": "NEWS – S1 MD2 (off 0)",
-    "notes": "",
-    "kind": "content",
-    "meta": {
-      "season": 1,
-      "matchday": 2,
-      "content_type": "news",
-      "offset": 0
-    }
   },
   {
     "id": "f9e25604f48f4ac9a18c687e96c8ba57",
@@ -115,14 +35,6 @@
     }
   },
   {
-    "id": "37f3a82403a745f9b8d40931bc0b20aa",
-    "date": "2125-10-20",
-    "title": "asdads",
-    "notes": "asdasdasasdasddas",
-    "kind": "free",
-    "meta": null
-  },
-  {
     "id": "d40e742df83847f48a9167e650ec4acf",
     "date": "2125-10-08",
     "title": "NEWS – S1 MD1 (off 0)",
@@ -134,22 +46,6 @@
       "content_type": "news",
       "offset": 0
     }
-  },
-  {
-    "id": "04f3d53d336042bb88d8771df5dc0507",
-    "date": "2125-10-30",
-    "title": "asdadssdfs",
-    "notes": "jh",
-    "kind": "free",
-    "meta": null
-  },
-  {
-    "id": "886a48e359b64ccf8d888f0b1713a21e",
-    "date": "2125-10-31",
-    "title": "asdadssdfs",
-    "notes": "jh",
-    "kind": "free",
-    "meta": null
   },
   {
     "id": "b74e4ab0cae7440b8ff7b98826a9eadb",
@@ -176,5 +72,81 @@
       "content_type": "news",
       "offset": -1
     }
+  },
+  {
+    "id": "e3969cb85c53449d9553dbab9dd63214",
+    "date": "2125-10-20",
+    "title": "NEWS – S1 MD5 (off 0)",
+    "notes": "",
+    "kind": "content",
+    "meta": {
+      "season": 1,
+      "matchday": 5,
+      "content_type": "news",
+      "offset": 0
+    }
+  },
+  {
+    "id": "205ca8cacb27446e9072a5d9e2455a18",
+    "date": "2125-10-29",
+    "title": "NEWS – S1 MD8 (off 0)",
+    "notes": "",
+    "kind": "content",
+    "meta": {
+      "season": 1,
+      "matchday": 8,
+      "content_type": "news",
+      "offset": 0
+    }
+  },
+  {
+    "id": "ee3a8effeaf746f58aa6337184f745e6",
+    "date": "2125-10-14",
+    "title": "NEWS – S1 MD3 (off 0)",
+    "notes": "",
+    "kind": "content",
+    "meta": {
+      "season": 1,
+      "matchday": 3,
+      "content_type": "news",
+      "offset": 0
+    }
+  },
+  {
+    "id": "fce47524e691415db39be13f8cd504a2",
+    "date": "2125-10-23",
+    "title": "NEWS – S1 MD6 (off 0)",
+    "notes": "",
+    "kind": "content",
+    "meta": {
+      "season": 1,
+      "matchday": 6,
+      "content_type": "news",
+      "offset": 0
+    }
+  },
+  {
+    "id": "258ca3c1ba534449a37332a85cd911be",
+    "date": "2125-10-16",
+    "title": "Ankündigung gameday",
+    "notes": "",
+    "kind": "free",
+    "meta": null
+  },
+  {
+    "id": "25c10216db164c8ab92fc4ae98bafa9f",
+    "date": "2125-10-17",
+    "title": "starting six",
+    "notes": "",
+    "kind": "free",
+    "meta": null
+  },
+  {
+    "id": "41d14f0a16674d4f8a5e301712755b43",
+    "date": "2125-10-16",
+    "title": "Tabelle Pre Gameday Spieltag 3",
+    "notes": "",
+    "kind": "free",
+    "meta": null
   }
 ]

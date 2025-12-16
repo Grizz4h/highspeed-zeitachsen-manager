@@ -76,7 +76,7 @@ class Starting6LayoutV1:
 
     # Logos
     logo_size: int = 200
-    home_logo_y: int = 295
+    home_logo_y: int = 285
     away_logo_y: int = 1230
 
     # HOME Block (oben -> nach unten)
