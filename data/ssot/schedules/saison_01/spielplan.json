@@ -1,0 +1,936 @@
+{
+  "season": 1,
+  "created_at": "2025-12-19T21:51:50.072541",
+  "nord": {
+    "teams": [
+      "Bad Nauheim Devils",
+      "Bremerhaven Trident",
+      "Düsseldorf Aurora",
+      "Frankfurt Core",
+      "Iserlohn Miners",
+      "Köln Blitzhaie",
+      "Krefeld Kernschlag",
+      "Kassel Zenit",
+      "Wolfsburg Voltsturm",
+      "Whiteout Berlin"
+    ],
+    "matchdays": [
+      {
+        "matchday": 1,
+        "matches": [
+          {
+            "home": "Bad Nauheim Devils",
+            "away": "Whiteout Berlin"
+          },
+          {
+            "home": "Bremerhaven Trident",
+            "away": "Wolfsburg Voltsturm"
+          },
+          {
+            "home": "Düsseldorf Aurora",
+            "away": "Kassel Zenit"
+          },
+          {
+            "home": "Frankfurt Core",
+            "away": "Krefeld Kernschlag"
+          },
+          {
+            "home": "Iserlohn Miners",
+            "away": "Köln Blitzhaie"
+          }
+        ]
+      },
+      {
+        "matchday": 2,
+        "matches": [
+          {
+            "home": "Wolfsburg Voltsturm",
+            "away": "Bad Nauheim Devils"
+          },
+          {
+            "home": "Kassel Zenit",
+            "away": "Whiteout Berlin"
+          },
+          {
+            "home": "Krefeld Kernschlag",
+            "away": "Bremerhaven Trident"
+          },
+          {
+            "home": "Köln Blitzhaie",
+            "away": "Düsseldorf Aurora"
+          },
+          {
+            "home": "Iserlohn Miners",
+            "away": "Frankfurt Core"
+          }
+        ]
+      },
+      {
+        "matchday": 3,
+        "matches": [
+          {
+            "home": "Bad Nauheim Devils",
+            "away": "Kassel Zenit"
+          },
+          {
+            "home": "Wolfsburg Voltsturm",
+            "away": "Krefeld Kernschlag"
+          },
+          {
+            "home": "Whiteout Berlin",
+            "away": "Köln Blitzhaie"
+          },
+          {
+            "home": "Bremerhaven Trident",
+            "away": "Iserlohn Miners"
+          },
+          {
+            "home": "Düsseldorf Aurora",
+            "away": "Frankfurt Core"
+          }
+        ]
+      },
+      {
+        "matchday": 4,
+        "matches": [
+          {
+            "home": "Krefeld Kernschlag",
+            "away": "Bad Nauheim Devils"
+          },
+          {
+            "home": "Köln Blitzhaie",
+            "away": "Kassel Zenit"
+          },
+          {
+            "home": "Iserlohn Miners",
+            "away": "Wolfsburg Voltsturm"
+          },
+          {
+            "home": "Frankfurt Core",
+            "away": "Whiteout Berlin"
+          },
+          {
+            "home": "Düsseldorf Aurora",
+            "away": "Bremerhaven Trident"
+          }
+        ]
+      },
+      {
+        "matchday": 5,
+        "matches": [
+          {
+            "home": "Bad Nauheim Devils",
+            "away": "Köln Blitzhaie"
+          },
+          {
+            "home": "Krefeld Kernschlag",
+            "away": "Iserlohn Miners"
+          },
+          {
+            "home": "Kassel Zenit",
+            "away": "Frankfurt Core"
+          },
+          {
+            "home": "Wolfsburg Voltsturm",
+            "away": "Düsseldorf Aurora"
+          },
+          {
+            "home": "Whiteout Berlin",
+            "away": "Bremerhaven Trident"
+          }
+        ]
+      },
+      {
+        "matchday": 6,
+        "matches": [
+          {
+            "home": "Iserlohn Miners",
+            "away": "Bad Nauheim Devils"
+          },
+          {
+            "home": "Frankfurt Core",
+            "away": "Köln Blitzhaie"
+          },
+          {
+            "home": "Düsseldorf Aurora",
+            "away": "Krefeld Kernschlag"
+          },
+          {
+            "home": "Bremerhaven Trident",
+            "away": "Kassel Zenit"
+          },
+          {
+            "home": "Whiteout Berlin",
+            "away": "Wolfsburg Voltsturm"
+          }
+        ]
+      },
+      {
+        "matchday": 7,
+        "matches": [
+          {
+            "home": "Bad Nauheim Devils",
+            "away": "Frankfurt Core"
+          },
+          {
+            "home": "Iserlohn Miners",
+            "away": "Düsseldorf Aurora"
+          },
+          {
+            "home": "Köln Blitzhaie",
+            "away": "Bremerhaven Trident"
+          },
+          {
+            "home": "Krefeld Kernschlag",
+            "away": "Whiteout Berlin"
+          },
+          {
+            "home": "Kassel Zenit",
+            "away": "Wolfsburg Voltsturm"
+          }
+        ]
+      },
+      {
+        "matchday": 8,
+        "matches": [
+          {
+            "home": "Düsseldorf Aurora",
+            "away": "Bad Nauheim Devils"
+          },
+          {
+            "home": "Bremerhaven Trident",
+            "away": "Frankfurt Core"
+          },
+          {
+            "home": "Whiteout Berlin",
+            "away": "Iserlohn Miners"
+          },
+          {
+            "home": "Wolfsburg Voltsturm",
+            "away": "Köln Blitzhaie"
+          },
+          {
+            "home": "Kassel Zenit",
+            "away": "Krefeld Kernschlag"
+          }
+        ]
+      },
+      {
+        "matchday": 9,
+        "matches": [
+          {
+            "home": "Bad Nauheim Devils",
+            "away": "Bremerhaven Trident"
+          },
+          {
+            "home": "Düsseldorf Aurora",
+            "away": "Whiteout Berlin"
+          },
+          {
+            "home": "Frankfurt Core",
+            "away": "Wolfsburg Voltsturm"
+          },
+          {
+            "home": "Iserlohn Miners",
+            "away": "Kassel Zenit"
+          },
+          {
+            "home": "Köln Blitzhaie",
+            "away": "Krefeld Kernschlag"
+          }
+        ]
+      },
+      {
+        "matchday": 10,
+        "matches": [
+          {
+            "home": "Whiteout Berlin",
+            "away": "Bad Nauheim Devils"
+          },
+          {
+            "home": "Wolfsburg Voltsturm",
+            "away": "Bremerhaven Trident"
+          },
+          {
+            "home": "Kassel Zenit",
+            "away": "Düsseldorf Aurora"
+          },
+          {
+            "home": "Krefeld Kernschlag",
+            "away": "Frankfurt Core"
+          },
+          {
+            "home": "Köln Blitzhaie",
+            "away": "Iserlohn Miners"
+          }
+        ]
+      },
+      {
+        "matchday": 11,
+        "matches": [
+          {
+            "home": "Bad Nauheim Devils",
+            "away": "Wolfsburg Voltsturm"
+          },
+          {
+            "home": "Whiteout Berlin",
+            "away": "Kassel Zenit"
+          },
+          {
+            "home": "Bremerhaven Trident",
+            "away": "Krefeld Kernschlag"
+          },
+          {
+            "home": "Düsseldorf Aurora",
+            "away": "Köln Blitzhaie"
+          },
+          {
+            "home": "Frankfurt Core",
+            "away": "Iserlohn Miners"
+          }
+        ]
+      },
+      {
+        "matchday": 12,
+        "matches": [
+          {
+            "home": "Kassel Zenit",
+            "away": "Bad Nauheim Devils"
+          },
+          {
+            "home": "Krefeld Kernschlag",
+            "away": "Wolfsburg Voltsturm"
+          },
+          {
+            "home": "Köln Blitzhaie",
+            "away": "Whiteout Berlin"
+          },
+          {
+            "home": "Iserlohn Miners",
+            "away": "Bremerhaven Trident"
+          },
+          {
+            "home": "Frankfurt Core",
+            "away": "Düsseldorf Aurora"
+          }
+        ]
+      },
+      {
+        "matchday": 13,
+        "matches": [
+          {
+            "home": "Bad Nauheim Devils",
+            "away": "Krefeld Kernschlag"
+          },
+          {
+            "home": "Kassel Zenit",
+            "away": "Köln Blitzhaie"
+          },
+          {
+            "home": "Wolfsburg Voltsturm",
+            "away": "Iserlohn Miners"
+          },
+          {
+            "home": "Whiteout Berlin",
+            "away": "Frankfurt Core"
+          },
+          {
+            "home": "Bremerhaven Trident",
+            "away": "Düsseldorf Aurora"
+          }
+        ]
+      },
+      {
+        "matchday": 14,
+        "matches": [
+          {
+            "home": "Köln Blitzhaie",
+            "away": "Bad Nauheim Devils"
+          },
+          {
+            "home": "Iserlohn Miners",
+            "away": "Krefeld Kernschlag"
+          },
+          {
+            "home": "Frankfurt Core",
+            "away": "Kassel Zenit"
+          },
+          {
+            "home": "Düsseldorf Aurora",
+            "away": "Wolfsburg Voltsturm"
+          },
+          {
+            "home": "Bremerhaven Trident",
+            "away": "Whiteout Berlin"
+          }
+        ]
+      },
+      {
+        "matchday": 15,
+        "matches": [
+          {
+            "home": "Bad Nauheim Devils",
+            "away": "Iserlohn Miners"
+          },
+          {
+            "home": "Köln Blitzhaie",
+            "away": "Frankfurt Core"
+          },
+          {
+            "home": "Krefeld Kernschlag",
+            "away": "Düsseldorf Aurora"
+          },
+          {
+            "home": "Kassel Zenit",
+            "away": "Bremerhaven Trident"
+          },
+          {
+            "home": "Wolfsburg Voltsturm",
+            "away": "Whiteout Berlin"
+          }
+        ]
+      },
+      {
+        "matchday": 16,
+        "matches": [
+          {
+            "home": "Frankfurt Core",
+            "away": "Bad Nauheim Devils"
+          },
+          {
+            "home": "Düsseldorf Aurora",
+            "away": "Iserlohn Miners"
+          },
+          {
+            "home": "Bremerhaven Trident",
+            "away": "Köln Blitzhaie"
+          },
+          {
+            "home": "Whiteout Berlin",
+            "away": "Krefeld Kernschlag"
+          },
+          {
+            "home": "Wolfsburg Voltsturm",
+            "away": "Kassel Zenit"
+          }
+        ]
+      },
+      {
+        "matchday": 17,
+        "matches": [
+          {
+            "home": "Bad Nauheim Devils",
+            "away": "Düsseldorf Aurora"
+          },
+          {
+            "home": "Frankfurt Core",
+            "away": "Bremerhaven Trident"
+          },
+          {
+            "home": "Iserlohn Miners",
+            "away": "Whiteout Berlin"
+          },
+          {
+            "home": "Köln Blitzhaie",
+            "away": "Wolfsburg Voltsturm"
+          },
+          {
+            "home": "Krefeld Kernschlag",
+            "away": "Kassel Zenit"
+          }
+        ]
+      },
+      {
+        "matchday": 18,
+        "matches": [
+          {
+            "home": "Bremerhaven Trident",
+            "away": "Bad Nauheim Devils"
+          },
+          {
+            "home": "Whiteout Berlin",
+            "away": "Düsseldorf Aurora"
+          },
+          {
+            "home": "Wolfsburg Voltsturm",
+            "away": "Frankfurt Core"
+          },
+          {
+            "home": "Kassel Zenit",
+            "away": "Iserlohn Miners"
+          },
+          {
+            "home": "Krefeld Kernschlag",
+            "away": "Köln Blitzhaie"
+          }
+        ]
+      }
+    ]
+  },
+  "sued": {
+    "teams": [
+      "Augsburg Ferox",
+      "Landshut Lichtkern",
+      "München FluxBullen",
+      "Mannheim Ventus",
+      "Novadelta Panther",
+      "Nürnberg Eistiger",
+      "Regensburg Pulse",
+      "Ravensburg Zenit Falken",
+      "Straubing Forest Tigers",
+      "Schwenningen Sturmflügel"
+    ],
+    "matchdays": [
+      {
+        "matchday": 1,
+        "matches": [
+          {
+            "home": "Augsburg Ferox",
+            "away": "Schwenningen Sturmflügel"
+          },
+          {
+            "home": "Landshut Lichtkern",
+            "away": "Straubing Forest Tigers"
+          },
+          {
+            "home": "München FluxBullen",
+            "away": "Ravensburg Zenit Falken"
+          },
+          {
+            "home": "Mannheim Ventus",
+            "away": "Regensburg Pulse"
+          },
+          {
+            "home": "Novadelta Panther",
+            "away": "Nürnberg Eistiger"
+          }
+        ]
+      },
+      {
+        "matchday": 2,
+        "matches": [
+          {
+            "home": "Straubing Forest Tigers",
+            "away": "Augsburg Ferox"
+          },
+          {
+            "home": "Ravensburg Zenit Falken",
+            "away": "Schwenningen Sturmflügel"
+          },
+          {
+            "home": "Regensburg Pulse",
+            "away": "Landshut Lichtkern"
+          },
+          {
+            "home": "Nürnberg Eistiger",
+            "away": "München FluxBullen"
+          },
+          {
+            "home": "Mannheim Ventus",
+            "away": "Novadelta Panther"
+          }
+        ]
+      },
+      {
+        "matchday": 3,
+        "matches": [
+          {
+            "home": "Novadelta Panther",
+            "away": "Augsburg Ferox"
+          },
+          {
+            "home": "Nürnberg Eistiger",
+            "away": "Mannheim Ventus"
+          },
+          {
+            "home": "Regensburg Pulse",
+            "away": "München FluxBullen"
+          },
+          {
+            "home": "Ravensburg Zenit Falken",
+            "away": "Landshut Lichtkern"
+          },
+          {
+            "home": "Straubing Forest Tigers",
+            "away": "Schwenningen Sturmflügel"
+          }
+        ]
+      },
+      {
+        "matchday": 4,
+        "matches": [
+          {
+            "home": "Regensburg Pulse",
+            "away": "Augsburg Ferox"
+          },
+          {
+            "home": "Nürnberg Eistiger",
+            "away": "Ravensburg Zenit Falken"
+          },
+          {
+            "home": "Straubing Forest Tigers",
+            "away": "Novadelta Panther"
+          },
+          {
+            "home": "Mannheim Ventus",
+            "away": "Schwenningen Sturmflügel"
+          },
+          {
+            "home": "München FluxBullen",
+            "away": "Landshut Lichtkern"
+          }
+        ]
+      },
+      {
+        "matchday": 5,
+        "matches": [
+          {
+            "home": "Augsburg Ferox",
+            "away": "Nürnberg Eistiger"
+          },
+          {
+            "home": "Novadelta Panther",
+            "away": "Regensburg Pulse"
+          },
+          {
+            "home": "Ravensburg Zenit Falken",
+            "away": "Mannheim Ventus"
+          },
+          {
+            "home": "Straubing Forest Tigers",
+            "away": "München FluxBullen"
+          },
+          {
+            "home": "Schwenningen Sturmflügel",
+            "away": "Landshut Lichtkern"
+          }
+        ]
+      },
+      {
+        "matchday": 6,
+        "matches": [
+          {
+            "home": "Augsburg Ferox",
+            "away": "Novadelta Panther"
+          },
+          {
+            "home": "Mannheim Ventus",
+            "away": "Nürnberg Eistiger"
+          },
+          {
+            "home": "München FluxBullen",
+            "away": "Regensburg Pulse"
+          },
+          {
+            "home": "Landshut Lichtkern",
+            "away": "Ravensburg Zenit Falken"
+          },
+          {
+            "home": "Schwenningen Sturmflügel",
+            "away": "Straubing Forest Tigers"
+          }
+        ]
+      },
+      {
+        "matchday": 7,
+        "matches": [
+          {
+            "home": "Augsburg Ferox",
+            "away": "Mannheim Ventus"
+          },
+          {
+            "home": "Novadelta Panther",
+            "away": "München FluxBullen"
+          },
+          {
+            "home": "Nürnberg Eistiger",
+            "away": "Landshut Lichtkern"
+          },
+          {
+            "home": "Regensburg Pulse",
+            "away": "Schwenningen Sturmflügel"
+          },
+          {
+            "home": "Ravensburg Zenit Falken",
+            "away": "Straubing Forest Tigers"
+          }
+        ]
+      },
+      {
+        "matchday": 8,
+        "matches": [
+          {
+            "home": "München FluxBullen",
+            "away": "Augsburg Ferox"
+          },
+          {
+            "home": "Landshut Lichtkern",
+            "away": "Mannheim Ventus"
+          },
+          {
+            "home": "Schwenningen Sturmflügel",
+            "away": "Novadelta Panther"
+          },
+          {
+            "home": "Straubing Forest Tigers",
+            "away": "Nürnberg Eistiger"
+          },
+          {
+            "home": "Ravensburg Zenit Falken",
+            "away": "Regensburg Pulse"
+          }
+        ]
+      },
+      {
+        "matchday": 9,
+        "matches": [
+          {
+            "home": "Augsburg Ferox",
+            "away": "Landshut Lichtkern"
+          },
+          {
+            "home": "München FluxBullen",
+            "away": "Schwenningen Sturmflügel"
+          },
+          {
+            "home": "Mannheim Ventus",
+            "away": "Straubing Forest Tigers"
+          },
+          {
+            "home": "Novadelta Panther",
+            "away": "Ravensburg Zenit Falken"
+          },
+          {
+            "home": "Nürnberg Eistiger",
+            "away": "Regensburg Pulse"
+          }
+        ]
+      },
+      {
+        "matchday": 10,
+        "matches": [
+          {
+            "home": "Schwenningen Sturmflügel",
+            "away": "Augsburg Ferox"
+          },
+          {
+            "home": "Straubing Forest Tigers",
+            "away": "Landshut Lichtkern"
+          },
+          {
+            "home": "Ravensburg Zenit Falken",
+            "away": "München FluxBullen"
+          },
+          {
+            "home": "Regensburg Pulse",
+            "away": "Mannheim Ventus"
+          },
+          {
+            "home": "Nürnberg Eistiger",
+            "away": "Novadelta Panther"
+          }
+        ]
+      },
+      {
+        "matchday": 11,
+        "matches": [
+          {
+            "home": "Augsburg Ferox",
+            "away": "Straubing Forest Tigers"
+          },
+          {
+            "home": "Schwenningen Sturmflügel",
+            "away": "Ravensburg Zenit Falken"
+          },
+          {
+            "home": "Landshut Lichtkern",
+            "away": "Regensburg Pulse"
+          },
+          {
+            "home": "München FluxBullen",
+            "away": "Nürnberg Eistiger"
+          },
+          {
+            "home": "Novadelta Panther",
+            "away": "Mannheim Ventus"
+          }
+        ]
+      },
+      {
+        "matchday": 12,
+        "matches": [
+          {
+            "home": "Ravensburg Zenit Falken",
+            "away": "Augsburg Ferox"
+          },
+          {
+            "home": "Regensburg Pulse",
+            "away": "Straubing Forest Tigers"
+          },
+          {
+            "home": "Nürnberg Eistiger",
+            "away": "Schwenningen Sturmflügel"
+          },
+          {
+            "home": "Landshut Lichtkern",
+            "away": "Novadelta Panther"
+          },
+          {
+            "home": "Mannheim Ventus",
+            "away": "München FluxBullen"
+          }
+        ]
+      },
+      {
+        "matchday": 13,
+        "matches": [
+          {
+            "home": "Augsburg Ferox",
+            "away": "Regensburg Pulse"
+          },
+          {
+            "home": "Ravensburg Zenit Falken",
+            "away": "Nürnberg Eistiger"
+          },
+          {
+            "home": "Novadelta Panther",
+            "away": "Straubing Forest Tigers"
+          },
+          {
+            "home": "Schwenningen Sturmflügel",
+            "away": "Mannheim Ventus"
+          },
+          {
+            "home": "Landshut Lichtkern",
+            "away": "München FluxBullen"
+          }
+        ]
+      },
+      {
+        "matchday": 14,
+        "matches": [
+          {
+            "home": "Nürnberg Eistiger",
+            "away": "Augsburg Ferox"
+          },
+          {
+            "home": "Regensburg Pulse",
+            "away": "Novadelta Panther"
+          },
+          {
+            "home": "Mannheim Ventus",
+            "away": "Ravensburg Zenit Falken"
+          },
+          {
+            "home": "München FluxBullen",
+            "away": "Straubing Forest Tigers"
+          },
+          {
+            "home": "Landshut Lichtkern",
+            "away": "Schwenningen Sturmflügel"
+          }
+        ]
+      },
+      {
+        "matchday": 15,
+        "matches": [
+          {
+            "home": "Augsburg Ferox",
+            "away": "Ravensburg Zenit Falken"
+          },
+          {
+            "home": "Straubing Forest Tigers",
+            "away": "Regensburg Pulse"
+          },
+          {
+            "home": "Schwenningen Sturmflügel",
+            "away": "Nürnberg Eistiger"
+          },
+          {
+            "home": "Novadelta Panther",
+            "away": "Landshut Lichtkern"
+          },
+          {
+            "home": "München FluxBullen",
+            "away": "Mannheim Ventus"
+          }
+        ]
+      },
+      {
+        "matchday": 16,
+        "matches": [
+          {
+            "home": "Mannheim Ventus",
+            "away": "Augsburg Ferox"
+          },
+          {
+            "home": "München FluxBullen",
+            "away": "Novadelta Panther"
+          },
+          {
+            "home": "Landshut Lichtkern",
+            "away": "Nürnberg Eistiger"
+          },
+          {
+            "home": "Schwenningen Sturmflügel",
+            "away": "Regensburg Pulse"
+          },
+          {
+            "home": "Straubing Forest Tigers",
+            "away": "Ravensburg Zenit Falken"
+          }
+        ]
+      },
+      {
+        "matchday": 17,
+        "matches": [
+          {
+            "home": "Augsburg Ferox",
+            "away": "München FluxBullen"
+          },
+          {
+            "home": "Mannheim Ventus",
+            "away": "Landshut Lichtkern"
+          },
+          {
+            "home": "Novadelta Panther",
+            "away": "Schwenningen Sturmflügel"
+          },
+          {
+            "home": "Nürnberg Eistiger",
+            "away": "Straubing Forest Tigers"
+          },
+          {
+            "home": "Regensburg Pulse",
+            "away": "Ravensburg Zenit Falken"
+          }
+        ]
+      },
+      {
+        "matchday": 18,
+        "matches": [
+          {
+            "home": "Landshut Lichtkern",
+            "away": "Augsburg Ferox"
+          },
+          {
+            "home": "Schwenningen Sturmflügel",
+            "away": "München FluxBullen"
+          },
+          {
+            "home": "Straubing Forest Tigers",
+            "away": "Mannheim Ventus"
+          },
+          {
+            "home": "Ravensburg Zenit Falken",
+            "away": "Novadelta Panther"
+          },
+          {
+            "home": "Regensburg Pulse",
+            "away": "Nürnberg Eistiger"
+          }
+        ]
+      }
+    ]
+  }
+}
