@@ -1,3 +1,4 @@
+import re
 import streamlit as st
 from pathlib import Path
 
@@ -9,31 +10,92 @@ st.title("🏒 PULS – Spieltags-Renderer")
 st.caption("JSON rein → Spieltagsübersicht PNG raus. Δ-Datum kommt aus UI (nicht aus JSON).")
 
 BASE_DIR = Path(__file__).resolve().parent.parent  # Projektroot (app.py liegt dort)
-DATA_DIR = BASE_DIR / "data" / "spieltage" / "saison_01"
-DATA_DIR.mkdir(exist_ok=True)
+SPIELTAGE_ROOT = BASE_DIR / "data" / "spieltage"   # <- root, darunter saison_XX
+SPIELTAGE_ROOT.mkdir(parents=True, exist_ok=True)
 
+# ----------------------------
+# Helpers
+# ----------------------------
+def season_folder(season: int) -> str:
+    return f"saison_{int(season):02d}"
+
+def discover_seasons(root: Path) -> list[int]:
+    seasons: list[int] = []
+    if not root.exists():
+        return seasons
+    for p in root.iterdir():
+        if p.is_dir():
+            m = re.match(r"(?i)saison_(\d+)$", p.name)
+            if m:
+                try:
+                    seasons.append(int(m.group(1)))
+                except Exception:
+                    pass
+    return sorted(set(seasons))
+
+def discover_matchdays(folder: Path) -> list[Path]:
+    if not folder.exists():
+        return []
+    # nur spieltag_XX.json
+    files = sorted(folder.glob("spieltag_[0-9][0-9].json"))
+    return files
+
+# ----------------------------
+# Saison-Auswahl
+# ----------------------------
 st.divider()
+st.subheader("0) Saison wählen")
 
+available_seasons = discover_seasons(SPIELTAGE_ROOT)
+
+# Fallback: wenn noch keine saison_XX existiert → default 1 anzeigen
+default_season = available_seasons[-1] if available_seasons else 1
+
+sel_season = st.selectbox(
+    "Saison",
+    options=available_seasons if available_seasons else [default_season],
+    index=(len(available_seasons) - 1) if available_seasons else 0,
+    format_func=lambda s: f"Saison {int(s):02d}",
+)
+
+DATA_DIR = SPIELTAGE_ROOT / season_folder(sel_season)
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+st.caption(f"Aktiver Ordner: `{DATA_DIR.as_posix()}`")
+
+# ----------------------------
+# JSON Auswahl / Upload
+# ----------------------------
+st.divider()
 st.subheader("1) JSON wählen")
-uploaded = st.file_uploader("JSON hochladen", type=["json"])
-local_files = sorted(DATA_DIR.glob("*.json"))
 
+uploaded = st.file_uploader("JSON hochladen", type=["json"])
+
+local_files = discover_matchdays(DATA_DIR)
 choice = None
 if local_files:
-    choice = st.selectbox("…oder eine JSON aus /data auswählen", ["—"] + [p.name for p in local_files])
+    choice = st.selectbox(
+        "…oder eine JSON aus /data auswählen",
+        ["—"] + [p.name for p in local_files],
+    )
+else:
+    st.info("In dieser Saison liegen noch keine `spieltag_XX.json` Dateien.")
 
-json_path = None
+json_path: Path | None = None
 
 if uploaded is not None:
+    # Upload immer in die gewählte Saison speichern
     target = DATA_DIR / uploaded.name
     target.write_bytes(uploaded.getvalue())
     json_path = target
-    st.success(f"Gespeichert: data/{uploaded.name}")
+    st.success(f"Gespeichert: data/spieltage/{season_folder(sel_season)}/{uploaded.name}")
 elif choice and choice != "—":
     json_path = DATA_DIR / choice
 
+# ----------------------------
+# Renderer Optionen
+# ----------------------------
 st.divider()
-
 st.subheader("2) Δ-Datum setzen")
 st.caption("Gib nur '2125-10-18' ein. Das Δ setzt der Renderer automatisch davor.")
 delta_date_input = st.text_input("Δ-Datum", value="2125-10-18", help="Format: 2125-10-18 (ohne Δ).")
@@ -41,28 +103,34 @@ delta_date_input = st.text_input("Δ-Datum", value="2125-10-18", help="Format: 2
 enable_vs = st.toggle("Renderer soll 'VS' in die Mitte schreiben (sonst frei lassen)", value=False)
 enable_team_fx = st.toggle("Teamnamen mit FX (Stroke/Shadow)", value=True)
 
-
+# ----------------------------
+# Rendern
+# ----------------------------
 st.divider()
 
 if json_path:
     st.subheader("3) Rendern")
+    st.caption(f"Quelle: `{json_path.name}` (Saison {int(sel_season):02d})")
+
     if st.button("Render Spieltagsübersicht", type="primary"):
         try:
             out_path = render_from_json_file(
-            json_path=json_path,
-            enable_draw_vs=enable_vs,
-            delta_date=delta_date_input,
-            enable_fx_on_teams=enable_team_fx,
-            header_fx="ice_noise",
-        )
-            st.success(f"Gerendert: {Path(out_path).name}")
+                json_path=json_path,
+                enable_draw_vs=enable_vs,
+                delta_date=delta_date_input,
+                enable_fx_on_teams=enable_team_fx,
+                header_fx="ice_noise",
+            )
+            out_path = Path(out_path)
 
-            img_bytes = Path(out_path).read_bytes()
-            st.image(img_bytes, caption=Path(out_path).name, use_container_width=True)
+            st.success(f"Gerendert: {out_path.name}")
+
+            img_bytes = out_path.read_bytes()
+            st.image(img_bytes, caption=out_path.name, use_container_width=True)
             st.download_button(
                 "PNG herunterladen",
                 data=img_bytes,
-                file_name=Path(out_path).name,
+                file_name=out_path.name,
                 mime="image/png",
             )
 
