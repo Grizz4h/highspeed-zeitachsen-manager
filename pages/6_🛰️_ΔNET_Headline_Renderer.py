@@ -5,11 +5,49 @@ from pathlib import Path
 import streamlit as st
 
 from tools.deltanet.headline import render_deltanet_headline, save_payload_json
+from tools.deltanet.name_mapper import NameMapper
 
 
 st.set_page_config(page_title="ΔNET Headline Renderer", layout="wide")
+@st.cache_resource
+def get_name_mapper() -> NameMapper:
+    return NameMapper.from_repo_file()
+
 
 st.title("🛰️ ΔNET — Headline Renderer")
+
+st.markdown("### Player-Name Mapper")
+
+mapper = get_name_mapper()
+st.caption(f"Mapping geladen: {mapper.size()} Spieler")
+
+col1, col2 = st.columns([1, 1], gap="large")
+
+with col1:
+    real_input = st.text_input("Echter Name (Telegram)", placeholder="z.B. Peter Abbandonato")
+    if st.button("Fake-Namen finden", use_container_width=True):
+        hit = mapper.lookup_fake(real_input)
+        if hit.fake and hit.confidence >= 0.9:
+            st.success(f"Fake: **{hit.fake}**")
+        elif hit.fake:
+            st.warning(f"Best guess: **{hit.fake}** (Confidence {hit.confidence:.2f})")
+            if hit.suggestions:
+                st.write("Vorschläge:")
+                for r, f, score in hit.suggestions:
+                    st.write(f"- {r} → **{f}** ({score:.2f})")
+        else:
+            st.error("Kein Treffer. Dann fehlt der Name im Mapping.")
+
+with col2:
+    raw = st.text_area(
+        "Telegram-News reinkopieren (ersetzt alle echten Namen)",
+        placeholder="Beispiel: Peter Abbandonato fällt verletzt aus ...",
+        height=140
+    )
+    if st.button("Text ersetzen", use_container_width=True):
+        replaced = mapper.replace_in_text(raw)
+        st.text_area("Ergebnis (copy & paste)", value=replaced, height=140)
+
 st.caption("Authoring-Tool: Text rein, Bild raus. Kein PUX-Backend nötig.")
 
 repo_root = Path(__file__).resolve().parents[1]
