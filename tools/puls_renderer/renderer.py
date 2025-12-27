@@ -484,7 +484,7 @@ def draw_text_grain_overlay_bbox(
     fill: Tuple[int, int, int, int],
     anchor: str = "mm",
     strength: int = 35,          # 10..60 (je höher, desto sichtbarer)
-    grain_density: float = 0.10, # 0.05..0.20
+    grain_density: float = 0.0, # 0.05..0.20
     blur: float = 0.6,           # 0..1.2
     seed: Optional[int] = 2,
 ) -> None:
