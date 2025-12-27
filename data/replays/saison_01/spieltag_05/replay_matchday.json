@@ -1,0 +1,97 @@
+{
+  "timestamp": "2025-12-27T23:32:44.624376",
+  "season": 1,
+  "matchday": 5,
+  "games": [
+    {
+      "game_id": "Bad Nauheim Devils-Köln Blitzhaie",
+      "featured": false,
+      "conference": "Nord",
+      "home": "Bad Nauheim Devils",
+      "away": "Köln Blitzhaie",
+      "g_home": 3,
+      "g_away": 2
+    },
+    {
+      "game_id": "Krefeld Kernschlag-Iserlohn Miners",
+      "featured": false,
+      "conference": "Nord",
+      "home": "Krefeld Kernschlag",
+      "away": "Iserlohn Miners",
+      "g_home": 0,
+      "g_away": 3
+    },
+    {
+      "game_id": "Kassel Zenit-Frankfurt Core",
+      "featured": false,
+      "conference": "Nord",
+      "home": "Kassel Zenit",
+      "away": "Frankfurt Core",
+      "g_home": 3,
+      "g_away": 0
+    },
+    {
+      "game_id": "Wolfsburg Voltsturm-Düsseldorf Aurora",
+      "featured": false,
+      "conference": "Nord",
+      "home": "Wolfsburg Voltsturm",
+      "away": "Düsseldorf Aurora",
+      "g_home": 2,
+      "g_away": 1
+    },
+    {
+      "game_id": "Whiteout Berlin-Bremerhaven Trident",
+      "featured": false,
+      "conference": "Nord",
+      "home": "Whiteout Berlin",
+      "away": "Bremerhaven Trident",
+      "g_home": 4,
+      "g_away": 0
+    },
+    {
+      "game_id": "Augsburg Ferox-Nürnberg Eistiger",
+      "featured": false,
+      "conference": "Süd",
+      "home": "Augsburg Ferox",
+      "away": "Nürnberg Eistiger",
+      "g_home": 1,
+      "g_away": 1
+    },
+    {
+      "game_id": "Novadelta Panther-Regensburg Pulse",
+      "featured": false,
+      "conference": "Süd",
+      "home": "Novadelta Panther",
+      "away": "Regensburg Pulse",
+      "g_home": 3,
+      "g_away": 0
+    },
+    {
+      "game_id": "Ravensburg Zenit Falken-Mannheim Ventus",
+      "featured": false,
+      "conference": "Süd",
+      "home": "Ravensburg Zenit Falken",
+      "away": "Mannheim Ventus",
+      "g_home": 2,
+      "g_away": 3
+    },
+    {
+      "game_id": "Straubing Forest Tigers-München FluxBullen",
+      "featured": false,
+      "conference": "Süd",
+      "home": "Straubing Forest Tigers",
+      "away": "München FluxBullen",
+      "g_home": 0,
+      "g_away": 4
+    },
+    {
+      "game_id": "Schwenningen Sturmflügel-Landshut Lichtkern",
+      "featured": false,
+      "conference": "Süd",
+      "home": "Schwenningen Sturmflügel",
+      "away": "Landshut Lichtkern",
+      "g_home": 3,
+      "g_away": 0
+    }
+  ]
+}
